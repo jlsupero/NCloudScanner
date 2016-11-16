@@ -24,7 +24,7 @@ public class Noscript extends SpiderScript implements ScriptImpl {
 			while((str=bf.readLine())!=null){
 				sb.append(str);
 			}
-			System.out.println(sb.toString());
+			
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
