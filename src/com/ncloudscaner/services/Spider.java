@@ -20,6 +20,7 @@ public class Spider {
 	public void  run() throws IOException{
 		RegexImpl rimpl = new RegexImpl();
 		try {
+			System.out.println("Run");
 			Noscript ns = new Noscript(url);
 			ns.getResult();
 		} catch (Exception e) {
