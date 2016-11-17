@@ -11,6 +11,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,16 +69,20 @@ public class NCSCore {
 			System.out.println(str);
 		}
 		System.out.println("end");
+		
 		*/
+		
+		
 		RegexImpl reg = new RegexImpl();
 		String[] r = {"<a(.*?)href=\"","\""};
-		UrlFilter urlfilter = reg.getUrl("http://www.163.com","<a(.*?)href=\"(.*?)\"", r,"http://www.noscriptk.com/ab");
+		UrlFilter urlfilter = reg.getUrl("http://noscriptk.com","<a(.*?)href=\"(.*?)\"", r,"noscript");
 		HashMap<String,String> map = urlfilter.getUrl();
 		Iterator it = map.keySet().iterator();
 		while(it.hasNext()){
 			String key=(String)it.next();
 			System.out.println(key+":"+map.get(key));
 		}
+		
 	}
 	public static void getUrl(String urlx) throws UnsupportedEncodingException, IOException{
 		/*
