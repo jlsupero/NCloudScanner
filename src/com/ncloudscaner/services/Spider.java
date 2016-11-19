@@ -8,21 +8,25 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
-import com.ncloudscaner.impl.spider.RegexImpl;
+import com.ncloudscaner.impl.spider.AlinksImpl;
 import com.ncloudscaner.scripts.Noscript;
 
-public class Spider {
+public class Spider implements Runnable {
 	private String url;
+	private String extra;
+	public Spider(){
+		System.out.println("s");
+	}
 	public  Spider  create(String url){
 		this.url = url;
+		this.extra = "";
+		System.out.print("axx");
 		return this;
 	}
-	public void  run() throws IOException{
-		RegexImpl rimpl = new RegexImpl();
+	public synchronized  void  run(){
+		AlinksImpl rimpl = new AlinksImpl(url,"");
 		try {
-			System.out.println("Run");
-			Noscript ns = new Noscript(url);
-			ns.getResult();
+			rimpl.getUrl(url, extra);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
