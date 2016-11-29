@@ -101,7 +101,7 @@ public class AlinksImpl implements Runnable {
 							if(!urlFilter(tree.getTreeRoot()+str)){
 								linksTree.setUrlMap(urlMap_key, tree.getTreeRoot()+str);
 								linksTree.setCount();
-								System.out.println(tree.getTreeRoot()+str+":"+linksTree.getCount());
+								System.out.println(tree.getTreeRoot()+str+":"+linksTree.getCount()+":"+urlMap_key);
 								getUrl(tree.getTreeRoot(),str);
 							}
 						}
@@ -110,10 +110,8 @@ public class AlinksImpl implements Runnable {
 		}
 	}
 
-	private Object currentThread() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+
 
 	@Override
 	public void run() {

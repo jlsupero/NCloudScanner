@@ -22,17 +22,78 @@ import com.ncloudscaner.impl.spider.AlinksImpl;
 import com.ncloudscaner.services.Spider;
 
 
-public class NCSCore {
-	private static ArrayList<String> list;
-	public static void _init(String[] args) throws IOException{
-		
-		//Spider spider = new Spider().create("http://www.noscriptk.com/");
-		AlinksImpl impl = new AlinksImpl("http://www.noscriptk.com/","");
-		Thread t1 = new Thread(impl);
-		Thread t2 = new Thread(impl);
-		t1.start();
-		t2.start();
+public class NCApplicationContext {
+	private String param;//URL等参数
+	private String threadNum;//线程数
+	private String url;//URL
+	private int report;//是否上传到服务器
+	private int mod;//使用模块--0:停止;1:spider;2:字典查找;3:SQL  INJECTION;
+	private int debug;//是否生成日志
+	public  NCApplicationContext(){
+		this.debug = 1;
+		this.report = 1;
 	}
+	/* @Name: _init;
+	 * @Params: String[] args;
+	 * @Return: boolean;
+	 * @Description: 系统的入口，负责分配任务；
+	 */
+	public boolean _init(String[] args) {
+		/* param -u  --url : >>this.url;
+		 * param -m  --mod : >>this.mod;
+		 * param --no-report :>>this.report = 0;
+		 * param --no-debug : >>this.debug = 0;
+		 * param -t  --thread :>> this.threadNum ;Num:0-9;
+		 * For example : ncscanner -u http://www.xxx.com/ -t 3 -m spider  --no-report --no-debug
+		 */
+		try{
+			int i=0;
+			String[] input = args;
+			for(String arg:input){
+				switch(arg.trim().toLowerCase()){
+					case "-u":
+						this.url = input[i+1];break;
+					case "--url":
+						this.url = input[i+1];break;
+					case "-m":
+						if(input[i+1].equalsIgnoreCase("spider"))
+							this.mod = 1;
+						if(input[i+1].equalsIgnoreCase("dir"))
+							this.mod = 2;
+						if(input[i+1].equalsIgnoreCase("sql"))
+							this.mod = 3;	
+						break;
+					case "--mod":
+						if(input[i+1].equalsIgnoreCase("spider"))
+							this.mod = 1;
+						if(input[i+1].equalsIgnoreCase("dir"))
+							this.mod = 2;
+						if(input[i+1].equalsIgnoreCase("sql"))
+							this.mod = 3;
+						break;
+					case "--no-report":
+						this.report = 0;break;
+					case "--no-debug":
+						this.debug = 0;break;
+					case "-t":
+						this.threadNum = input[i+1];break;
+					case "--thread":
+						this.threadNum = input[i+1];break;
+				}
+				i++;
+			}
+			if((url==null)||(Integer.valueOf(mod)==0)||(!url.startsWith("http"))){
+				return false;
+		}
+			else{
+			//System.out.println("URL:"+url+"--Mod:"+mod+"--Report"+report+"--DEBUG:"+debug+"Thread:"+threadNum);
+			return true;
+		}
+	}catch(Exception e){
+		return false;
+	}
+}
+	/*
 	public static void main(String[] args) throws IOException{
 		//_init(args);
 		/*
@@ -88,10 +149,10 @@ public class NCSCore {
 			System.out.println(key+":"+map.get(key));
 		}*/
 		
-		_init(args);
+		
 		
 		
 
-	}
-	
+	//}
+	//*/
 }
