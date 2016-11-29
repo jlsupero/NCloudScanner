@@ -1,0 +1,14 @@
+{
+  "Title":"Noscriptk.com -Spider",
+  "User-Agent":"Mozilla/5.0 (Windows; U; Windows NT 5.2) AppleWebKit/525.13 (KHTML, like Gecko) Chrome/0.2.149.27 "
+  "Method":GET,
+  "Connection":"Keep-Alive",
+  "Rules":{ 
+		"Url":"http://www.164.com/ab/",
+		"Url_regex":".*?",
+		"Content":{
+			     "title":">(.*?)</a>",
+			     "content":"href="(.*?)"		
+			  }
+	  }	
+}
