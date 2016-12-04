@@ -8,7 +8,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
-import com.ncloudscaner.impl.spider.AlinksImpl;
+import com.ncloudscaner.impl.spider.AlinksImplBAK;
 import com.ncloudscaner.scripts.Noscript;
 
 public class Spider implements Runnable {

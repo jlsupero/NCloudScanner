@@ -8,6 +8,10 @@ public class LinksTree {
 	private String RightNode;
 	private HashMap<String,String> urlMap;
 	private int count;
+	public  LinksTree(){
+		
+		
+	}
 	public  LinksTree(String root){
 		this.TreeRoot = root;
 		this.urlMap = new HashMap<String,String>();
@@ -23,6 +27,7 @@ public class LinksTree {
 		this.RightNode = rightNode;
 	}
 	public void setTreeRoot(String treeRoot){
+		
 		this.TreeRoot = treeRoot;
 	}
 	
@@ -32,7 +37,7 @@ public class LinksTree {
 	public void setCount(){
 		this.count++;
 	}
-	public String getTreeRoot(){
+	public String root(){
 		return TreeRoot;
 	}
 	public String getLeftNode(){
@@ -43,6 +48,10 @@ public class LinksTree {
 	}
 	public int getCount(){
 		return count;
+	}
+	public String getTreeRoot() {
+		// TODO Auto-generated method stub
+		return TreeRoot;
 	}
 
 }

@@ -1,132 +1,71 @@
 package com.ncloudscaner.impl.spider;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.ncloudscaner.domains.LinksTree;
-import com.ncloudscaner.iface.spider.RegexInterface;
-import com.ncloud.extend.function.*;
-public class AlinksImpl implements Runnable {
-	private int i;
-	private HashMap<String,String> urlMap;
-	private String urlMap_key,url;
-	LinksTree linksTree;
-	public AlinksImpl(String Url,String extra){
-		this.i = 0;
-		this.linksTree = new LinksTree(Url);
-		this.url=Url;
+
+public class AlinksImpl {
+	private LinksTree tree;
+	public void  setTree(LinksTree Tree){
+		this.tree  = Tree;
 	}
-	
-	public boolean urlFilter(String url){
-		urlMap_key =  toHash(url);
-		
-		if(linksTree.getUrl().containsKey(urlMap_key))
-			return true;
-		else
-			return false;
+	public LinksTree getTree(){
+		return tree;
 	}
-	private boolean testCode(String url) throws IOException{
-		URL urlx = new URL(url);
-		HttpURLConnection conn = (HttpURLConnection) urlx.openConnection();
-		if(conn.getResponseCode()==404){
-			return false;
-		}else{
-			return true;
-		}
-	}
-	private String toHash(String url){
-		SecurityHandler sh = new SecurityHandler();
-		try {
-			return sh.encryptMD5(url);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-		
-	}
-	public  void getUrl(String urlroot,String extra) throws UnsupportedEncodingException, IOException{
-		LinksTree tree = linksTree;
-		String[] domain = {".com",".net",".me",".org",".cn",".xin"};
-		String Root = tree.getTreeRoot();
-		String Extra = extra;
-		String urla,urlRoot,urlExtra;
-		URL url = new URL(tree.getRightNode()+Extra);
-		String[] replace = {"<a(.*?)href=\"","\""};
-		String  regex= "<a(.*?)href=\"(.*?)\"";
-		HttpURLConnection httpconn = (HttpURLConnection) url.openConnection();
-		String root= tree.getTreeRoot()+"/";
-		if(httpconn.getResponseCode()!=404){
-			BufferedReader bf = new BufferedReader(new InputStreamReader(httpconn.getInputStream(),"utf-8"));
-			String str;
-			while((str=bf.readLine())!=null){
-				Pattern pattern  = Pattern.compile(regex);
-				Matcher m = pattern.matcher(str);
-				if(m.find()){
-					str = m.group();
-					for(int i=0;i<=replace.length-1;i++){
-						str = str.replaceAll(replace[i], "");	
+	public boolean setUrl(String Url){
+		try{
+			String url = Url;
+			String urls;
+			if((url.startsWith("http:"))||url.startsWith("https:")){
+				urls = url.substring(url.indexOf("://")+3);
+				if(!urls.contains("/")){
+					url+="/";
+					tree.setTreeRoot(url);
+					tree.setRightNode("");
+				}
+				else if((urls.split("/").length<2)){
+					tree.setTreeRoot(url);
+					tree.setRightNode("");
+					System.out.println(tree.getTreeRoot());
+				}
+				else if(url.endsWith("/")){
+					tree.setTreeRoot(url);
+					tree.setRightNode("");
+					
+				}
+				else{
+					String[] sp =urls.split("/");
+					url="";
+					for(int a=0;a<=sp.length-2;a++){
+						url=url+sp[a]+"/";
 					}
-					if(str.startsWith("http")){
-						tree.setTreeRoot(str.substring(0,str.lastIndexOf("/")+1));
-						str = str.substring(str.lastIndexOf("/")+1);
-						
-					}
-					/*
-					else{
-						if(str.startsWith("/")){
-							for(String end:domain){
-								if(tree.getTreeRoot().endsWith(end))
-									tree.setTreeRoot(tree.getTreeRoot().substring(0,tree.getTreeRoot().lastIndexOf(end)+1));
-								else{
-									tree.setTreeRoot(tree.getTreeRoot()+"/");
-									//System.out.println("begin:"+tree.getRightNode()+Extra);
-								}
-							}
-						}
-					}
-						*/
-						if((!str.contains("#"))&&(!str.contains("javascript"))){
-							if(!urlFilter(tree.getTreeRoot()+str)){
-								linksTree.setUrlMap(urlMap_key, tree.getTreeRoot()+str);
-								linksTree.setCount();
-								System.out.println(tree.getTreeRoot()+str+":"+linksTree.getCount()+":"+urlMap_key);
-								getUrl(tree.getTreeRoot(),str);
-							}
-						}
+					url = Url.substring(0,Url.indexOf("://")+3)+url;
+					tree.setTreeRoot(url);
+					tree.setRightNode(sp[sp.length-1]);
 				}
 			}
+			else if(url.startsWith("../")){
+				
+				String  treeRoot = tree.getTreeRoot().substring(tree.getTreeRoot().indexOf("://")+3,tree.getTreeRoot().length())+"ext";
+				//System.out.println(tree.getTreeRoot().substring(tree.getTreeRoot().indexOf("://")+3,tree.getTreeRoot().length()));
+				String[] sp = treeRoot.split("/");
+				String root = "";
+				for(int i=0;i<=sp.length-3;i++){
+					root+=sp[i]+"/";
+				}
+				
+				root=tree.getTreeRoot().substring(0,tree.getTreeRoot().indexOf("://")+3)+root;
+				tree.setTreeRoot(root);
+				tree.setRightNode(url.substring(3));
+			}
+			else{
+				tree.setRightNode(url.replaceAll("./", ""));
+			}
+			return  true;
+		}catch(Exception e){
+			return false;
 		}
+			
 	}
-
-
-
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		try {
-			getUrl(this.url,"");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void start(){
+		
 	}
-	
-	
-	
 }

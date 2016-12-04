@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 
 import com.ncloudscaner.aop.DynamicProxy;
 import com.ncloudscaner.domains.LinksTree;
-import com.ncloudscaner.impl.spider.AlinksImpl;
+import com.ncloudscaner.impl.spider.AlinksImplBAK;
 import com.ncloudscaner.services.Spider;
 
 
@@ -103,7 +103,7 @@ public class NCApplicationContext {
 		HashMap<String,String> r = new HashMap<String,String>();
 		r.put("title", "<a(\\s+?)(.*?)</a>");
 		r.put("word", "df(.+?)sd");
-		AlinksImpl rimpl  = new AlinksImpl();
+		AlinksImplBAK rimpl  = new AlinksImplBAK();
 		rimpl.getValueable(content, r,"c:\\ax.txt");
 		*/
 		//_init(args);
@@ -139,7 +139,7 @@ public class NCApplicationContext {
 		*/
 		
 		/*
-		AlinksImpl reg = new AlinksImpl();
+		AlinksImplBAK reg = new AlinksImplBAK();
 		String[] r = {"<a(.*?)href=\"","\""};
 		LinksTree urlfilter = reg.getUrl("http://tieba.baidu.com/f?kw=%B7%F0%C9%BD%D2%BB%D6%D0&fr=ala0&tpl=5","<a(.*?)href=\"(.*?)\"", r,"noscript");
 		HashMap<String,String> map = urlfilter.getUrl();

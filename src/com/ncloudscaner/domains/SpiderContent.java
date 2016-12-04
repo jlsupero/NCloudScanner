@@ -6,18 +6,18 @@ public class SpiderContent {
 	private String url;
 	private String output;
 	private int  size;
-	private HashMap<String,Object> rule;
-	private HashMap<String,Object> result;
+	private HashMap<String,String> rule;
+	private HashMap<String,String> result;
 	public void setUrl(String Url){
 		this.url = Url;
 	}
 	public void setOutput(String Output){
 		this.output = Output;
 	}
-	public void setRule(HashMap<String,Object> Rule){
+	public void setRule(HashMap<String,String> Rule){
 		this.rule = Rule; 
 	}
-	public void setResult(HashMap<String,Object> Result){
+	public void setResult(HashMap<String,String> Result){
 		this.result = Result;
 	}
 	public String getUrl(){
@@ -29,10 +29,10 @@ public class SpiderContent {
 	public int getSize(){
 		return result.size();
 	}
-	public HashMap<String,Object> getRule(){
+	public HashMap<String,String> getRule(){
 		return rule;
 	}
-	public HashMap<String,Object> getResult(){
+	public HashMap<String,String> getResult(){
 		return result;
 	}
 }

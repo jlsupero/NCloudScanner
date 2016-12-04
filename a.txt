@@ -7,7 +7,7 @@
 		"Url":"http://www.164.com/ab/",
 		"Url_regex":".*?",
 		"Content":{
-			     "title":">(.*?)</a>",
+			     "title":"keep.:>(.*?)</a>:::del.:",
 			     "content":"href="(.*?)"		
 			  }
 	  }	
